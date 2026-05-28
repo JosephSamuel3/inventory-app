@@ -16,7 +16,7 @@ const {
     locationIdValidator,
 } = require("../validations/locationValidators");
 
-const locationRouter = new Router();
+const locationRouter = Router();
 
 locationRouter.get("/", getAllLocations);
 locationRouter.get("/:id", locationIdValidator, validateRequest, getLocationById);

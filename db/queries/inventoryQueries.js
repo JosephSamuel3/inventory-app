@@ -176,7 +176,7 @@ const deleteItem = async (id) => {
      RETURNING *`,
     [id]
   );
-  return rows[0] ?? null; 
+  return rows[0] ?? null;
 };
 
 // CHECK if a SKU already exists
@@ -188,6 +188,35 @@ const skuExists = async (sku, excludeId = null) => {
     [sku, excludeId]
   );
   return rows.length > 0;
+};
+
+// GET dashboard statistics for the main page
+const getDashboardStats = async () => {
+  const { rows: itemStats } = await pool.query(
+    `SELECT
+       COUNT(DISTINCT id) AS total_items,
+       SUM(quantity) AS total_units,
+       COALESCE(SUM(quantity * price), 0) AS total_inventory_value,
+       COUNT(CASE WHEN quantity <= 5 THEN 1 END) AS low_stock_count
+     FROM inventory_items`
+  );
+
+  const { rows: categoryStats } = await pool.query(
+    `SELECT COUNT(*) AS total_categories FROM categories`
+  );
+
+  const { rows: locationStats } = await pool.query(
+    `SELECT COUNT(*) AS total_locations FROM locations`
+  );
+
+  return {
+    totalItems: parseInt(itemStats[0].total_items) || 0,
+    totalUnits: parseInt(itemStats[0].total_units) || 0,
+    totalInventoryValue: parseFloat(itemStats[0].total_inventory_value) || 0,
+    lowStockCount: parseInt(itemStats[0].low_stock_count) || 0,
+    totalCategories: parseInt(categoryStats[0].total_categories) || 0,
+    totalLocations: parseInt(locationStats[0].total_locations) || 0,
+  };
 };
 
 module.exports = {
@@ -204,4 +233,5 @@ module.exports = {
   updateItemQuantity,
   deleteItem,
   skuExists,
+  getDashboardStats,
 };

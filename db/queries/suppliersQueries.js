@@ -2,7 +2,7 @@ const pool = require("../pool")
 
 
 //GET all suppliers
-const getAllSupplier = async () => {
+const getAllSuppliers = async () => {
     const { rows } = await pool.query(
        `SELECT * FROM suppliers 
        ORDER BY name ASC` 

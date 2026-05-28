@@ -16,7 +16,7 @@ const {
     categoryIdValidator,
 } = require("../validations/categoryValidators");
 
-const categoryRouter = new Router();
+const categoryRouter = Router();
 
 
 categoryRouter.get("/", getAllCategories);

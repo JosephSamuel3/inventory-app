@@ -1,0 +1,50 @@
+
+<%- include("partials/head") %>
+<section class="hero">
+    <div>
+        <p class="strap">Inventory management</p>
+        <h1></h1>
+        <p></p>
+    </div>
+    <div class="hero-btn">
+        <a class="button" href="">Add new Item</a>
+        <a class="button" href="">Add category</a>
+        <a class="button" href="">Add location</a>
+        <a class="button" href="">Add supplier</a>
+    </div>
+</section>
+
+<section class="card-grid">
+    <article class="card">
+        <span>Items</span>
+        <strong><%= %></strong>
+    </article>
+    <article class="card">
+        <span>Category</span>
+        <strong><%= %></strong>
+    </article>
+    <article class="card">
+        <span>Storage locations</span>
+        <strong><%= %></strong>
+    </article>
+    <article class="card">
+        <span>Units in stock</span>
+        <strong><%= %></strong>
+    </article>
+    <article class="card">
+        <span>Inventory Value</span>
+        <strong><%= %></strong>
+    </article>
+</section>
+
+<section class="low-stock-panel">
+    <div class="heading">
+        <div>
+            <p class="strap"></p>
+            <h2>low stock items</h2>
+        </div>
+        <a class="text-link" href="">View all items</a>
+    </div>
+    <!-- here we list all items low in stock -->
+</section>
+<%- include("partials/footer")>

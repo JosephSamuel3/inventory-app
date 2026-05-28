@@ -1,6 +1,9 @@
 const express = require("express");
+const indexRouter = require("./routes/indexRouter");
 const categoryRouter = require("./routes/categoriesRouter");
 const locationRouter = require("./routes/locationsRouter");
+const inventoryRouter = require("./routes/inventoryRouter");
+const suppliersRouter = require("./routes/suppliersRouter");
 
 const path = require("node:path");
 const app = express();
@@ -16,8 +19,11 @@ app.use(express.static(assetsPath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/", indexRouter);
 app.use("/category", categoryRouter);
 app.use("/location", locationRouter);
+app.use("/inventory", inventoryRouter);
+app.use("/suppliers", suppliersRouter);
 
 
 app.use((err, req, res, next) => {
