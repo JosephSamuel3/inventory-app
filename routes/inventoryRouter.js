@@ -5,14 +5,11 @@ const {
     getAllItems,
     getItemById,
     searchItems,
-    getItemsByCategory,
-    getItemsBySupplier,
-    getItemsByLocation,
-    getLowStockItems,
     createItem,
     updateItem,
-    updateItemQuantity,
     deleteItem,
+    getCreateForm,
+    getEditForm,
 } = require("../controllers/inventoryController");
 
 const {
@@ -27,15 +24,12 @@ const inventoryRouter = Router();
 
 inventoryRouter.get("/", getAllItems);
 inventoryRouter.get("/search", searchItemsValidator, validateRequest, searchItems);
-inventoryRouter.get("/low-stock", getLowStockItems);
-inventoryRouter.get("/category/:categoryId", getItemsByCategory);
-inventoryRouter.get("/supplier/:supplierId", getItemsBySupplier);
-inventoryRouter.get("/location/:locationId", getItemsByLocation);
-inventoryRouter.get("/:id", itemIdValidator, validateRequest, getItemById);
+inventoryRouter.get("/create", getCreateForm);                                          
 inventoryRouter.post("/", createItemValidator, validateRequest, createItem);
-inventoryRouter.put("/:id", updateItemValidator, validateRequest, updateItem);
-inventoryRouter.patch("/:id/quantity", updateQuantityValidator, validateRequest, updateItemQuantity);
-inventoryRouter.delete("/:id", itemIdValidator, validateRequest, deleteItem);
+inventoryRouter.get("/:id", itemIdValidator, validateRequest, getItemById);
+inventoryRouter.get("/:id/edit", itemIdValidator, validateRequest, getEditForm);        
+inventoryRouter.post("/:id", itemIdValidator, updateItemValidator, validateRequest, updateItem);
+inventoryRouter.post("/:id/delete", itemIdValidator, validateRequest, deleteItem);
 
 module.exports = inventoryRouter;
 

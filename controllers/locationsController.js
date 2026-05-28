@@ -2,21 +2,9 @@ const db = require("../db/queries/locationsQueries");
 
 async function getAllLocations(req, res) {
     const locations = await db.getAllLocations();
-    console.log("Locations: ", locations);
-    res.json({ locations });
+    res.render("locations/index", { locations });
 };
 
-async function getLocationById(req, res) {
-    const id = req.params.id;
-    const location = await db.getLocationById(id);
-
-    if (!location) {
-        return res.status(404).json({ error: `location with id ${id} not found` });
-    };
-
-    console.log("Location: ", location);
-    res.json({ location });
-};
 
 async function getLocationItems(req, res) {
     const id = req.params.id;
@@ -29,7 +17,6 @@ async function getLocationItems(req, res) {
     const location = {
         id: rows[0].location_id,
         name: rows[0].location_name,
-        createdAt: rows[0].location_created_at,
     };
 
     const items = rows
@@ -42,16 +29,23 @@ async function getLocationItems(req, res) {
             price: row.price,
         }));
 
-    console.log("Location items: ", { location, items });
-    res.json({ location, items });
+    res.render("locations/show", { location, items });
+};
+
+// → res.render("locations/create")
+async function getCreateForm(req, res) {
+    
 };
 
 async function createLocation(req, res) {
     const { name } = req.body;
     const location = await db.createLocation(name);
+    res.redirect("/locations")
+};
 
-    console.log("Created location:", location);
-    res.status(201).json({ location });
+// → res.render("locations/edit", { location })
+async function getEditForm(req, res) {
+    
 }
 
 async function updateLocation(req, res) {
@@ -63,9 +57,8 @@ async function updateLocation(req, res) {
         return res.status(404).json({ error: `Locaton with id ${id} not found` });
     }
 
-    console.log("Updated location:", location);
-    res.json({ location });
-}
+    res.redirect(`/locations/${id}`)
+};
 
 async function deleteLocation(req, res) {
     const id = req.params.id;
@@ -75,15 +68,15 @@ async function deleteLocation(req, res) {
         return res.status(404).json({ error: `Location with id ${id} not found` });
     }
 
-    console.log("Deleted location:", location);
-    res.json({ message: `Location ${id} deleted`, location });
-}
+    res.redirect("/locations")
+};
 
 module.exports = {
     getAllLocations,
-    getLocationById,
     getLocationItems,
+    getCreateForm,
     createLocation,
+    getEditForm,
     updateLocation,
     deleteLocation,
-}
+};

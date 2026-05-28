@@ -3,9 +3,10 @@ const validateRequest = require("../middlewares/validateRequest");
 
 const {
     getAllCategories,
-    getCategoryById,
     getCategoryItems,
+    getCreateForm,
     createCategory,
+    getEditForm,
     updateCategory,
     deleteCategory,
 } = require("../controllers/categoriesController");
@@ -20,10 +21,11 @@ const categoryRouter = Router();
 
 
 categoryRouter.get("/", getAllCategories);
-categoryRouter.get("/:id", categoryIdValidator, validateRequest, getCategoryById);
-categoryRouter.get("/:id/items", categoryIdValidator, validateRequest, getCategoryItems);
+categoryRouter.get("/create", getCreateForm);                                              
 categoryRouter.post("/", createCategoryValidator, validateRequest, createCategory);
-categoryRouter.put("/:id", categoryIdValidator, updateCategoryValidator, validateRequest, updateCategory);
-categoryRouter.delete("/:id", categoryIdValidator, validateRequest, deleteCategory);
+categoryRouter.get("/:id/items", categoryIdValidator, validateRequest, getCategoryItems);
+categoryRouter.get("/:id/edit", categoryIdValidator, validateRequest, getEditForm);        
+categoryRouter.post("/:id", categoryIdValidator, updateCategoryValidator, validateRequest, updateCategory);
+categoryRouter.post("/:id/delete", categoryIdValidator, validateRequest, deleteCategory);
 
 module.exports = categoryRouter;

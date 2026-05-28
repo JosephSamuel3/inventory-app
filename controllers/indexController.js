@@ -5,10 +5,8 @@ async function getDashboard(req, res) {
         const stats = await inventoryDb.getDashboardStats();
         const lowStockItems = await inventoryDb.getLowStockItems(5);
 
-        console.log("Dashboard stats: ", stats);
-        console.log("Low stock items: ", lowStockItems);
-
-        res.json({
+        res.render("index", {
+            title: "Inventory Manager",
             stats,
             lowStockItems,
         });

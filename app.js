@@ -20,8 +20,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/", indexRouter);
-app.use("/category", categoryRouter);
-app.use("/location", locationRouter);
+app.use("/categories", categoryRouter);
+app.use("/locations", locationRouter);
 app.use("/inventory", inventoryRouter);
 app.use("/suppliers", suppliersRouter);
 

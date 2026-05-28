@@ -2,21 +2,9 @@ const db = require("../db/queries/suppliersQueries");
 
 async function getAllSuppliers(req, res) {
     const suppliers = await db.getAllSuppliers();
-    console.log("Suppliers: ", suppliers);
-    res.json({ suppliers });
+    res.render("suppliers/index" ,{ suppliers });
 }
 
-async function getSupplierById(req, res) {
-    const id = req.params.id;
-    const supplier = await db.getSupplierById(id);
-
-    if (!supplier) {
-        return res.status(404).json({ error: `Supplier with id ${id} not found` });
-    }
-
-    console.log("Supplier: ", supplier);
-    res.json({ supplier });
-}
 
 async function getSupplierItems(req, res) {
     const id = req.params.id;
@@ -44,25 +32,30 @@ async function getSupplierItems(req, res) {
             price: row.price,
         }));
 
-    console.log("Supplier items: ", { supplier, items });
-    res.json({ supplier, items });
+    res.render(
+        "suppliers/show",
+        { supplier, items },
+    );
 }
 
 async function searchSuppliers(req, res) {
     const { search } = req.query;
     const suppliers = await db.searchSuppliers(search);
-
-    console.log("Search results: ", suppliers);
-    res.json({ suppliers });
+    res.render("suppliers/index", { suppliers });
 }
+
+// → res.render("suppliers/create")
+async function getCreateForm(req, res) { }         
 
 async function createSupplier(req, res) {
     const { name, email, phone } = req.body;
     const supplier = await db.createSupplier({ name, email, phone });
 
-    console.log("Created supplier:", supplier);
-    res.status(201).json({ supplier });
+    res.redirect("/suppliers");
 }
+
+// → res.render("suppliers/edit", { supplier })
+async function getEditForm(req, res) { }           
 
 async function updateSupplier(req, res) {
     const id = req.params.id;
@@ -71,10 +64,9 @@ async function updateSupplier(req, res) {
 
     if (!supplier) {
         return res.status(404).json({ error: `Supplier with id ${id} not found` });
-    }
+    };
 
-    console.log("Updated supplier:", supplier);
-    res.json({ supplier });
+    res.redirect(`/suppliers/${id}`);;
 }
 
 async function deleteSupplier(req, res) {
@@ -85,16 +77,16 @@ async function deleteSupplier(req, res) {
         return res.status(404).json({ error: `Supplier with id ${id} not found` });
     }
 
-    console.log("Deleted supplier:", supplier);
-    res.json({ message: `Supplier ${id} deleted`, supplier });
+    res.redirect("/suppliers");
 }
 
 module.exports = {
     getAllSuppliers,
-    getSupplierById,
     getSupplierItems,
     searchSuppliers,
+    getCreateForm,
     createSupplier,
+    getEditForm,
     updateSupplier,
     deleteSupplier,
 };

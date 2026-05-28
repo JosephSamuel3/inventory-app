@@ -2,20 +2,10 @@ const db = require('../db/queries/categoriesQueries');
 
 async function getAllCategories(req, res) {
     const categories = await db.getAllCategories();
-    console.log("Categories: ", categories);
-    res.json({ categories });
-};
-
-async function getCategoryById(req, res) {
-    const id = req.params.id;
-    const category = await db.getCategoryById(id);
-
-    if (!category) {
-        return res.status(404).json({ error: `Category with id ${id} not found` });
-    }
-
-    console.log("Category: ", category);
-    res.json({ category });
+    res.render(
+        "categories/index",
+        categories
+    );
 };
 
 async function getCategoryItems(req, res) {
@@ -29,7 +19,6 @@ async function getCategoryItems(req, res) {
     const category = {
         id: rows[0].category_id,
         name: rows[0].category_name,
-        createdAt: rows[0].category_created_at,
     };
 
     const items = rows
@@ -42,16 +31,26 @@ async function getCategoryItems(req, res) {
             price: row.price,
         }));
 
-    console.log("Category items: ", { category, items });
-    res.json({ category, items });
+    res.render(
+        "categories/show",
+        { category, items }
+    );
+}
+
+// → res.render("categories/create")
+async function getCreateForm(req, res) {
+    
 }
 
 async function createCategory(req, res) {
     const { name } = req.body;
     const category = await db.createCategory(name);
+    res.redirect("/categories");
+}
 
-    console.log("Created category:", category);
-    res.status(201).json({ category });
+// fetches category, → res.render("categories/edit", { category })
+async function getEditForm(req, res) {
+    
 }
 
 async function updateCategory(req, res) {
@@ -63,8 +62,7 @@ async function updateCategory(req, res) {
         return res.status(404).json({ error: `Category with id ${id} not found` });
     }
 
-    console.log("Updated category:", category);
-    res.json({ category });
+    res.redirect(`categories/${id}`);
 }
 
 async function deleteCategory(req, res) {
@@ -75,15 +73,15 @@ async function deleteCategory(req, res) {
         return res.status(404).json({ error: `Category with id ${id} not found` });
     }
 
-    console.log("Deleted category:", category);
-    res.json({ message: `Category ${id} deleted`, category });
+    res.redirect("/categories");
 }
 
 module.exports = {
     getAllCategories,
-    getCategoryById,
     getCategoryItems,
+    getCreateForm,
     createCategory,
+    getEditForm,
     updateCategory,
     deleteCategory,
 }
