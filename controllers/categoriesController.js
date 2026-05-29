@@ -1,19 +1,24 @@
-const db = require('../db/queries/categoriesQueries');
+const db = require("../db/queries/categoriesQueries");
+const asyncHandler = require("./asyncHandler");
 
-async function getAllCategories(req, res) {
+const getAllCategories = asyncHandler(async (req, res) => {
     const categories = await db.getAllCategories();
-    res.render(
-        "categories/index",
-        categories
-    );
-};
 
-async function getCategoryItems(req, res) {
+    res.render("categories/index", {
+        title: "Categories",
+        categories,
+    });
+});
+
+const getCategoryItems = asyncHandler(async (req, res) => {
     const id = req.params.id;
+
     const rows = await db.getCategoryWithItems(id);
 
     if (!rows || rows.length === 0) {
-        return res.status(404).json({ error: `Category with id ${id} not found` });
+        return res.status(404).json({
+            error: `Category with id ${id} not found`,
+        });
     }
 
     const category = {
@@ -31,50 +36,71 @@ async function getCategoryItems(req, res) {
             price: row.price,
         }));
 
-    res.render(
-        "categories/show",
-        { category, items }
-    );
-}
+    res.render("categories/show", {
+        title: "Category items",
+        category,
+        items,
+    });
+});
 
-// → res.render("categories/create")
-async function getCreateForm(req, res) {
-    
-}
+const getCreateForm = asyncHandler(async (req, res) => {
+    res.render("categories/create", {
+        title: "Add New Category",
+    });
+});
 
-async function createCategory(req, res) {
+const createCategory = asyncHandler(async (req, res) => {
     const { name } = req.body;
-    const category = await db.createCategory(name);
+
+    await db.createCategory(name);
+
     res.redirect("/categories");
-}
+});
 
-// fetches category, → res.render("categories/edit", { category })
-async function getEditForm(req, res) {
-    
-}
+const getEditForm = asyncHandler(async (req, res) => {
+    const id = req.params.id;
 
-async function updateCategory(req, res) {
+    const category = await db.getCategoryById(id);
+
+    if (!category) {
+        return res.status(404).json({
+            error: `Category with id ${id} not found`,
+        });
+    }
+
+    res.render("categories/edit", {
+        category,
+    });
+});
+
+const updateCategory = asyncHandler(async (req, res) => {
     const id = req.params.id;
     const { name } = req.body;
+
     const category = await db.updateCategory(id, name);
 
     if (!category) {
-        return res.status(404).json({ error: `Category with id ${id} not found` });
+        return res.status(404).json({
+            error: `Category with id ${id} not found`,
+        });
     }
 
-    res.redirect(`categories/${id}`);
-}
+    res.redirect(`/categories/${id}`);
+});
 
-async function deleteCategory(req, res) {
+const deleteCategory = asyncHandler(async (req, res) => {
     const id = req.params.id;
+
     const category = await db.deleteCategory(id);
 
     if (!category) {
-        return res.status(404).json({ error: `Category with id ${id} not found` });
+        return res.status(404).json({
+            error: `Category with id ${id} not found`,
+        });
     }
 
     res.redirect("/categories");
-}
+});
 
 module.exports = {
     getAllCategories,
@@ -84,4 +110,4 @@ module.exports = {
     getEditForm,
     updateCategory,
     deleteCategory,
-}
+};

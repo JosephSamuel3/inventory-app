@@ -1,0 +1,23 @@
+<%- include("../partials/head") %>
+<h1><%= title %></h1>
+
+<a href="/locations/create">
+    Add New Location
+</a>
+
+<ul>
+    <% locations.forEach(location => { %>
+        <li>
+
+            <a href="/locations/<%= location.id %>">
+                <%= location.name %>
+            </a>
+
+            <a href="/locations/<%= location.id %>/edit">
+                Edit
+            </a>
+
+        </li>
+    <% }) %>
+</ul>
+<%- include("../partials/footer") %>

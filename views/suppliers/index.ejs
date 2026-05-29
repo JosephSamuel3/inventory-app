@@ -1,0 +1,39 @@
+<%- include("../partials/head") %>
+<h1>Suppliers</h1>
+
+<a href="/suppliers/create">
+    Add New Supplier
+</a>
+
+<form action="/suppliers/search" method="GET">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search suppliers..."
+    >
+
+    <button type="submit">
+        Search
+    </button>
+
+</form>
+
+<ul>
+    <% suppliers.forEach(supplier => { %>
+
+        <li>
+
+            <a href="/suppliers/<%= supplier.id %>">
+                <%= supplier.name %>
+            </a>
+
+            <a href="/suppliers/<%= supplier.id %>/edit">
+                Edit
+            </a>
+
+        </li>
+
+    <% }) %>
+</ul>
+<%- include("../partials/footer") %>

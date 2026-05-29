@@ -45,7 +45,11 @@ async function searchSuppliers(req, res) {
 }
 
 // → res.render("suppliers/create")
-async function getCreateForm(req, res) { }         
+async function getCreateForm(req, res) {
+    res.render("suppliers/create",
+        { title: "Add new supplier"}
+    );
+ };      
 
 async function createSupplier(req, res) {
     const { name, email, phone } = req.body;
@@ -55,7 +59,16 @@ async function createSupplier(req, res) {
 }
 
 // → res.render("suppliers/edit", { supplier })
-async function getEditForm(req, res) { }           
+async function getEditForm(req, res) {
+    const id = req.params.id;
+    const supplier = await db.getSupplierById;
+
+    if(!supplier) {
+        return res.status(404).json({ error: `Supplier with id ${id} not found` });
+    }
+
+    res.render("suppliers/edit", { supplier });
+ }           
 
 async function updateSupplier(req, res) {
     const id = req.params.id;

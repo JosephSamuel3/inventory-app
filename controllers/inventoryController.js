@@ -1,11 +1,17 @@
 const db = require("../db/queries/inventoryQueries");
+const asyncHandler = require("./asyncHandler");
+const categoriesDb = require("../db/queries/categoriesQueries");
+const suppliersDb = require("../db/queries/suppliersQueries");
+const locationsDb = require("../db/queries/locationsQueries");
 
-async function getAllItems(req, res) {
+
+const getAllItems = asyncHandler(async (req, res) => {
     const items = await db.getAllItems();
-    res.render("/inventory/index", { items });
-}
+    res.render("inventory/index", { items });
+});
 
-async function getItemById(req, res) {
+
+const getItemById = asyncHandler(async (req, res) => {
     const id = req.params.id;
     const item = await db.getItemById(id);
 
@@ -14,32 +20,63 @@ async function getItemById(req, res) {
     }
 
     res.render("inventory/show", { item })
-}
+});
 
-async function searchItems(req, res) {
+
+const searchItems = asyncHandler(async (req, res) => {
     const { search } = req.query;
     const items = await db.searchItems(search);
 
-    res.render("inventory/index", { items, search })
-}
+    res.render("/inventory", { items, search })
+});
 
-// needs categories, suppliers, locations for <select> dropdowns
-// → const [categories, suppliers, locations] = await Promise.all([...])
-// → res.render("inventory/create", { categories, suppliers, locations })
-async function getCreateForm(req, res) { }
+const getCreateForm = asyncHandler(async (req, res) => {
+    const [categories, suppliers, locations] = await Promise.all([
+        categoriesDb.getAllCategories(),
+        suppliersDb.getAllSuppliers(),
+        locationsDb.getAllLocations(),
+    ]);
+    res.render("inventory/create", 
+        { 
+            title: "Add new item", 
+            categories, 
+            suppliers, 
+            locations 
+        }
+    );
+});
 
-async function createItem(req, res) {
+const createItem = asyncHandler(async (req, res) => {
     const { name, description, sku, quantity, price, category_id, supplier_id, location_id } = req.body;
     const item = await db.createItem({ name, description, sku, quantity, price, category_id, supplier_id, location_id });
+    res.redirect(`/inventory/${item.id}`);
+});
 
-    res.redirect(`/inventory/${item.id}`)
-}
 
-// needs item + dropdown lists
-// → res.render("inventory/edit", { item, categories, suppliers, locations })
-async function getEditForm(req, res) { }
+const getEditForm = asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const [item, categories, suppliers, locations] = await Promise.all([
+        db.getItemById(id),
+        categoriesDb.getAllCategories(),
+        suppliersDb.getAllSuppliers(),
+        locationsDb.getAllLocations(),
+    ]);
 
-async function updateItem(req, res) {
+    if (!item) {
+        return res.status(404).json({ error: `Item with id ${id} not found` });
+    }
+
+    res.render("inventory/edit", {
+        title: "Edit item",
+        item,
+        categories,
+        suppliers,
+        locations,
+    });
+});
+
+
+const updateItem = asyncHandler(async (req, res) => {
     const id = req.params.id;
     const { name, description, sku, quantity, price, category_id, supplier_id, location_id } = req.body;
     const item = await db.updateItem(id, { name, description, sku, quantity, price, category_id, supplier_id, location_id });
@@ -48,11 +85,10 @@ async function updateItem(req, res) {
         return res.status(404).json({ error: `Item with id ${id} not found` });
     }
 
-    res.redirect(`/inventory/${id}`)
-}
+    res.redirect(`inventory/show`)
+});
 
-
-async function deleteItem(req, res) {
+const deleteItem = asyncHandler(async (req, res) => {
     const id = req.params.id;
     const item = await db.deleteItem(id);
 
@@ -61,7 +97,7 @@ async function deleteItem(req, res) {
     }
 
     res.redirect("/inventory")
-}
+});
 
 module.exports = {
     getAllItems,

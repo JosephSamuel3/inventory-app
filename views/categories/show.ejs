@@ -1,0 +1,38 @@
+<%- include("../partials/head") %>
+<h1><%= category.name %></h1>
+
+<a href="/categories">Back to Categories</a>
+
+<h2>Items</h2>
+
+<% if (items.length === 0) { %>
+    <p>No items found.</p>
+<% } else { %>
+    <ul>
+        <% items.forEach(item => { %>
+            <li>
+                <strong><%= item.name %></strong>
+                <br>
+
+                SKU: <%= item.sku %>
+                <br>
+
+                Quantity: <%= item.quantity %>
+                <br>
+
+                Price: $<%= item.price %>
+            </li>
+        <% }) %>
+    </ul>
+<% } %>
+
+<br>
+
+<a href="/categories/<%= category.id %>/edit">
+    Edit Category
+</a>
+
+<form action="/categories/<%= category.id %>/delete" method="POST">
+    <button type="submit">Delete Category</button>
+</form>
+<%- include("../partials/footer") %>

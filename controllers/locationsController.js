@@ -1,18 +1,25 @@
 const db = require("../db/queries/locationsQueries");
+const asyncHandler = require("./asyncHandler");
 
-async function getAllLocations(req, res) {
+const getAllLocations = asyncHandler(async (req, res) => {
     const locations = await db.getAllLocations();
-    res.render("locations/index", { locations });
-};
 
+    res.render("locations/index", {
+        title: "Storage Locations",
+        locations,
+    });
+});
 
-async function getLocationItems(req, res) {
+const getLocationItems = asyncHandler(async (req, res) => {
     const id = req.params.id;
+
     const rows = await db.getLocationWithItems(id);
 
     if (!rows || rows.length === 0) {
-        return res.status(404).json({ error: `Location with id ${id} not found` });
-    };
+        return res.status(404).json({
+            error: `Location with id ${id} not found`,
+        });
+    }
 
     const location = {
         id: rows[0].location_id,
@@ -29,47 +36,71 @@ async function getLocationItems(req, res) {
             price: row.price,
         }));
 
-    res.render("locations/show", { location, items });
-};
+    res.render("locations/show", {
+        title: "Location Detail",
+        location,
+        items,
+    });
+});
 
-// → res.render("locations/create")
-async function getCreateForm(req, res) {
-    
-};
+const getCreateForm = asyncHandler(async (req, res) => {
+    res.render("locations/create", {
+        title: "Add New Location",
+    });
+});
 
-async function createLocation(req, res) {
+const createLocation = asyncHandler(async (req, res) => {
     const { name } = req.body;
-    const location = await db.createLocation(name);
-    res.redirect("/locations")
-};
 
-// → res.render("locations/edit", { location })
-async function getEditForm(req, res) {
-    
-}
+    await db.createLocation(name);
 
-async function updateLocation(req, res) {
+    res.redirect("/locations");
+});
+
+const getEditForm = asyncHandler(async (req, res) => {
+    const id = req.params.id;
+
+    const location = await db.getLocationById(id);
+
+    if (!location) {
+        return res.status(404).json({
+            error: `Location with id ${id} not found`,
+        });
+    }
+
+    res.render("locations/edit", {
+        location,
+    });
+});
+
+const updateLocation = asyncHandler(async (req, res) => {
     const id = req.params.id;
     const { name } = req.body;
+
     const location = await db.updateLocation(id, name);
 
     if (!location) {
-        return res.status(404).json({ error: `Locaton with id ${id} not found` });
+        return res.status(404).json({
+            error: `Location with id ${id} not found`,
+        });
     }
 
-    res.redirect(`/locations/${id}`)
-};
+    res.redirect(`/locations/${id}`);
+});
 
-async function deleteLocation(req, res) {
+const deleteLocation = asyncHandler(async (req, res) => {
     const id = req.params.id;
+
     const location = await db.deleteLocation(id);
 
     if (!location) {
-        return res.status(404).json({ error: `Location with id ${id} not found` });
+        return res.status(404).json({
+            error: `Location with id ${id} not found`,
+        });
     }
 
-    res.redirect("/locations")
-};
+    res.redirect("/locations");
+});
 
 module.exports = {
     getAllLocations,

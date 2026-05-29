@@ -1,0 +1,39 @@
+<%- include("../partials/head") %>
+<%- include("../partials/errorMsg") %>
+
+<h1>Edit Location</h1>
+
+<form action="/locations/<%= location.id %>/edit" method="POST">
+
+    <label for="name">
+        Location Name
+    </label>
+
+    <input
+        type="text"
+        id="name"
+        name="name"
+        value="<%= location.name %>"
+        required
+    >
+
+    <button type="submit">
+        Update Location
+    </button>
+
+</form>
+
+<br>
+
+<form action="/locations/<%= location.id %>/delete" method="POST">
+    <button type="submit">
+        Delete Location
+    </button>
+</form>
+
+<br>
+
+<a href="/locations/<%= location.id %>">
+    Back
+</a>
+<%- include("../partials/footer") %>

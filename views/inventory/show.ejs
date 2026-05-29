@@ -1,0 +1,54 @@
+<%- include("../partials/head") %>
+<h1><%= item.name %></h1>
+
+<p>
+    <strong>Description:</strong>
+    <%= item.description %>
+</p>
+
+<p>
+    <strong>SKU:</strong>
+    <%= item.sku %>
+</p>
+
+<p>
+    <strong>Quantity:</strong>
+    <%= item.quantity %>
+</p>
+
+<p>
+    <strong>Price:</strong>
+    $<%= item.price %>
+</p>
+
+<p>
+    <strong>Category ID:</strong>
+    <%= item.category_id %>
+</p>
+
+<p>
+    <strong>Supplier ID:</strong>
+    <%= item.supplier_id %>
+</p>
+
+<p>
+    <strong>Location ID:</strong>
+    <%= item.location_id %>
+</p>
+
+<a href="/inventory/<%= item.id %>/edit">
+    Edit Item
+</a>
+
+<form action="/inventory/<%= item.id %>/delete" method="POST">
+    <button type="submit">
+        Delete Item
+    </button>
+</form>
+
+<br>
+
+<a href="/inventory">
+    Back to Inventory
+</a>
+<%- include("../partials/footer") %>

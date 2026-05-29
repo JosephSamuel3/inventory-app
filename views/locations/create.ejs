@@ -1,0 +1,30 @@
+<%- include("../partials/head") %>
+<%- include("../partials/errorMsg") %>
+
+<h1><%= title %></h1>
+
+<form action="/locations/create" method="POST">
+
+    <label for="name">
+        Location Name
+    </label>
+
+    <input
+        type="text"
+        id="name"
+        name="name"
+        required
+    >
+
+    <button type="submit">
+        Create Location
+    </button>
+
+</form>
+
+<br>
+
+<a href="/locations">
+    Back
+</a>
+<%- include("../partials/footer") %>

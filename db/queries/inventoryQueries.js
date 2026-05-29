@@ -47,53 +47,6 @@ const getItemById = async (id) => {
 };
 
 
-// GET a single item by SKU
-const getItemBySku = async (sku) => {
-  const { rows } = await pool.query(
-    `${ITEM_SELECT}
-     WHERE i.sku = $1`,
-    [sku]
-  );
-  return rows[0] ?? null;
-};
-
-
-// GET items filtered by category
-const getItemsByCategory = async (categoryId) => {
-  const { rows } = await pool.query(
-    `${ITEM_SELECT}
-     WHERE i.category_id = $1
-     ORDER BY i.name ASC`,
-    [categoryId]
-  );
-  return rows;
-};
-
-
-// GET items filtered by supplier
-const getItemsBySupplier = async (supplierId) => {
-  const { rows } = await pool.query(
-    `${ITEM_SELECT}
-     WHERE i.supplier_id = $1
-     ORDER BY i.name ASC`,
-    [supplierId]
-  );
-  return rows;
-};
-
-
-// GET items filtered by location
-const getItemsByLocation = async (locationId) => {
-  const { rows } = await pool.query(
-    `${ITEM_SELECT}
-     WHERE i.location_id = $1
-     ORDER BY i.name ASC`,
-    [locationId]
-  );
-  return rows;
-};
-
-
 // GET low-stock items (quantity at or below a threshold)
 // Defaults to 5 if no threshold is passed.
 const getLowStockItems = async (threshold = 5) => {
@@ -155,19 +108,6 @@ const updateItem = async (id, { name, description, sku, quantity, price, categor
 };
 
 
-// UPDATE quantity only (e.g. stock adjustment)
-const updateItemQuantity = async (id, quantity) => {
-  const { rows } = await pool.query(
-    `UPDATE inventory_items
-     SET quantity = $1
-     WHERE id = $2
-     RETURNING *`,
-    [quantity, id]
-  );
-  return rows[0] ?? null;
-};
-
-
 // DELETE an inventory item
 const deleteItem = async (id) => {
   const { rows } = await pool.query(
@@ -178,6 +118,7 @@ const deleteItem = async (id) => {
   );
   return rows[0] ?? null;
 };
+
 
 // CHECK if a SKU already exists
 const skuExists = async (sku, excludeId = null) => {
@@ -222,15 +163,10 @@ const getDashboardStats = async () => {
 module.exports = {
   getAllItems,
   getItemById,
-  getItemBySku,
-  getItemsByCategory,
-  getItemsBySupplier,
-  getItemsByLocation,
   getLowStockItems,
   searchItems,
   createItem,
   updateItem,
-  updateItemQuantity,
   deleteItem,
   skuExists,
   getDashboardStats,

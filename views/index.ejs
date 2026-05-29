@@ -7,33 +7,33 @@
         <p></p>
     </div>
     <div class="hero-btn">
-        <a class="button" href="">Add new Item</a>
-        <a class="button" href="">Add category</a>
-        <a class="button" href="">Add location</a>
-        <a class="button" href="">Add supplier</a>
+        <a class="button" href="/inventory/create">Add new Item</a>
+        <a class="button" href="categories/create">Add category</a>
+        <a class="button" href="/locations/create">Add location</a>
+        <a class="button" href="/suppliers/create">Add supplier</a>
     </div>
 </section>
 
 <section class="card-grid">
     <article class="card">
         <span>Items</span>
-        <strong><%= %></strong>
+        <strong><%= stats.totalItems %></strong>
     </article>
     <article class="card">
         <span>Category</span>
-        <strong><%= %></strong>
+        <strong><%= stats.totalCategories %></strong>
     </article>
     <article class="card">
         <span>Storage locations</span>
-        <strong><%= %></strong>
+        <strong><%= stats.totalLocations %></strong>
     </article>
     <article class="card">
         <span>Units in stock</span>
-        <strong><%= %></strong>
+        <strong><%= stats.totalUnits %></strong>
     </article>
     <article class="card">
         <span>Inventory Value</span>
-        <strong><%= %></strong>
+        <strong><%= stats.totalInventoryValue %></strong>
     </article>
 </section>
 
@@ -47,4 +47,4 @@
     </div>
     <!-- here we list all items low in stock -->
 </section>
-<%- include("partials/footer")>
+<%- include("partials/footer") %>

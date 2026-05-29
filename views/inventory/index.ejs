@@ -1,0 +1,35 @@
+<%- include("../partials/head") %>
+
+<h1>Inventory</h1>
+
+<a href="/inventory/create">
+    Add New Item
+</a>
+
+<%- include("../partials/errorMsg") %>
+<form action="/inventory/search" method="GET">
+    <input
+        type="text"
+        name="search"
+        placeholder="Search items..."
+    >
+
+    <button type="submit">
+        Search
+    </button>
+</form>
+
+<ul>
+    <% items.forEach(item => { %>
+        <li>
+            <a href="/inventory/<%= item.id %>">
+                <%= item.name %>
+            </a>
+
+            <a href="/inventory/<%= item.id %>/edit">
+                Edit
+            </a>
+        </li>
+    <% }) %>
+</ul>
+<%- include("../partials/footer") %>

@@ -1,0 +1,51 @@
+<%- include("../partials/head") %>
+<h1><%= location.name %></h1>
+
+<a href="/locations">
+    Back to Locations
+</a>
+
+<h2>Stored Items</h2>
+
+<% if (items.length === 0) { %>
+
+    <p>No items found in this location.</p>
+
+<% } else { %>
+
+    <ul>
+        <% items.forEach(item => { %>
+
+            <li>
+                <strong><%= item.name %></strong>
+
+                <br>
+
+                SKU: <%= item.sku %>
+
+                <br>
+
+                Quantity: <%= item.quantity %>
+
+                <br>
+
+                Price: $<%= item.price %>
+            </li>
+
+        <% }) %>
+    </ul>
+
+<% } %>
+
+<br>
+
+<a href="/locations/<%= location.id %>/edit">
+    Edit Location
+</a>
+
+<form action="/locations/<%= location.id %>/delete" method="POST">
+    <button type="submit">
+        Delete Location
+    </button>
+</form>
+<%- include("../partials/footer") %>
