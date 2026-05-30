@@ -22,10 +22,10 @@ const categoryRouter = Router();
 
 categoryRouter.get("/", getAllCategories);
 categoryRouter.get("/create", getCreateForm);                                              
-categoryRouter.post("/", createCategoryValidator, validateRequest, createCategory);
-categoryRouter.get("/:id/items", categoryIdValidator, validateRequest, getCategoryItems);
-categoryRouter.get("/:id/edit", categoryIdValidator, validateRequest, getEditForm);        
-categoryRouter.post("/:id", categoryIdValidator, updateCategoryValidator, validateRequest, updateCategory);
-categoryRouter.post("/:id/delete", categoryIdValidator, validateRequest, deleteCategory);
+categoryRouter.post("/", createCategoryValidator, validateRequest("categories/create"), createCategory);
+categoryRouter.get("/:id", categoryIdValidator, validateRequest("categories/index", { categories: [], title: "Categories" }), getCategoryItems);
+categoryRouter.get("/:id/edit", categoryIdValidator, validateRequest("categories/edit"), getEditForm);
+categoryRouter.post("/:id", categoryIdValidator, updateCategoryValidator, validateRequest("categories/edit"), updateCategory);
+categoryRouter.post("/:id/delete", categoryIdValidator, validateRequest("categories/index", { categories: [], title: "Categories" }), deleteCategory);
 
 module.exports = categoryRouter;

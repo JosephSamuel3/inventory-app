@@ -1,12 +1,13 @@
 const { validationResult } = require('express-validator');
 
-const validateRequest = (req, res, next) => {
+const validateRequest = (view, locals = {}) => (req, res, next) => {
     const result = validationResult(req);
 
     if (!result.isEmpty()) {
-        return res.status(400).render("inventory/create", {
+        return res.status(400).render(view, {
             errors: result.array(),
             body: req.body,
+            ...locals
         });
     }
 

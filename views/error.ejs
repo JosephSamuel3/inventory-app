@@ -1,0 +1,23 @@
+<%- include("partials/head")%>
+
+<h1>Error <%= status || 500 %></h1>
+
+<p>
+    <%= message || "Something went wrong." %>
+</p>
+
+<% if (error && process.env.NODE_ENV !== "production") { %>
+
+    <h2>Stack Trace</h2>
+
+    <pre>
+<%= error.stack %>
+    </pre>
+
+<% } %>
+
+<a href="/">
+    Return Home
+</a>
+
+<%- include("partials/footer") %>

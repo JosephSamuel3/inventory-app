@@ -16,7 +16,9 @@ const getLocationItems = asyncHandler(async (req, res) => {
     const rows = await db.getLocationWithItems(id);
 
     if (!rows || rows.length === 0) {
-        return res.status(404).json({
+        return res.status(404).render("error", {
+            title: "Not Found",
+            status: 404,
             error: `Location with id ${id} not found`,
         });
     }
@@ -63,7 +65,9 @@ const getEditForm = asyncHandler(async (req, res) => {
     const location = await db.getLocationById(id);
 
     if (!location) {
-        return res.status(404).json({
+        return res.status(404).render("error", {
+            title: "Not Found",
+            status: 404,
             error: `Location with id ${id} not found`,
         });
     }
@@ -80,7 +84,9 @@ const updateLocation = asyncHandler(async (req, res) => {
     const location = await db.updateLocation(id, name);
 
     if (!location) {
-        return res.status(404).json({
+        return res.status(404).render("error", {
+            title: "Not Found",
+            status: 404,
             error: `Location with id ${id} not found`,
         });
     }
@@ -94,7 +100,9 @@ const deleteLocation = asyncHandler(async (req, res) => {
     const location = await db.deleteLocation(id);
 
     if (!location) {
-        return res.status(404).json({
+        return res.status(404).render("error", {
+            title: "Not Found",
+            status: 404,
             error: `Location with id ${id} not found`,
         });
     }

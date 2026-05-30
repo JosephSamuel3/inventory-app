@@ -16,7 +16,9 @@ const getCategoryItems = asyncHandler(async (req, res) => {
     const rows = await db.getCategoryWithItems(id);
 
     if (!rows || rows.length === 0) {
-        return res.status(404).json({
+        return res.status(404).render("error", {
+            title: "Not Found",
+            status: 404,
             error: `Category with id ${id} not found`,
         });
     }
@@ -63,12 +65,15 @@ const getEditForm = asyncHandler(async (req, res) => {
     const category = await db.getCategoryById(id);
 
     if (!category) {
-        return res.status(404).json({
+        return res.status(404).render("error", {
+            title: "Not Found",
+            status: 404,
             error: `Category with id ${id} not found`,
         });
     }
 
     res.render("categories/edit", {
+        title: "Edit Category",
         category,
     });
 });
@@ -80,7 +85,9 @@ const updateCategory = asyncHandler(async (req, res) => {
     const category = await db.updateCategory(id, name);
 
     if (!category) {
-        return res.status(404).json({
+        return res.status(404).render("error", {
+            title: "Not Found",
+            status: 404,
             error: `Category with id ${id} not found`,
         });
     }
@@ -94,7 +101,9 @@ const deleteCategory = asyncHandler(async (req, res) => {
     const category = await db.deleteCategory(id);
 
     if (!category) {
-        return res.status(404).json({
+        return res.status(404).render("error", {
+            title: "Not Found",
+            status: 404,
             error: `Category with id ${id} not found`,
         });
     }

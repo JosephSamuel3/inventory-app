@@ -80,13 +80,6 @@ const updateItemValidator = [
 ];
 
 
-// PATCH /inventory/:id/quantity — quantity-only update
-const updateQuantityValidator = [
-  idParam,
-  quantityField,
-];
-
-
 // GET /inventory/:id  |  DELETE /inventory/:id
 const itemIdValidator = [idParam];
 
@@ -102,7 +95,6 @@ const searchItemsValidator = [
 module.exports = {
   createItemValidator,
   updateItemValidator,
-  updateQuantityValidator,
   itemIdValidator,
   searchItemsValidator,
 };

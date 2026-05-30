@@ -28,7 +28,11 @@ app.use("/suppliers", suppliersRouter);
 
 app.use((err, req, res, next) => {
     console.error(err);
-    res.status(500).render("error", { message: "Something went wrong." });
+    res.status(err.status || 500).render("error", {
+        status: err.status || 500,
+        message: err.message || "Something went wrong.",
+        error: err,
+    });
 });
 
 const PORT = process.env.PORT || 3000;

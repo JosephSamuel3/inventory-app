@@ -1,4 +1,4 @@
-const { body, param } = require('express-validator');
+const { body, param, query } = require('express-validator');
 const { supplierNameExists } = require('../db/queries/suppliersQueries');
 
 
@@ -45,6 +45,12 @@ const updateSupplierValidator = [
   phoneField,
 ];
 
+const searchSupplierValidator = [
+  query('search')
+    .trim()
+    .notEmpty().withMessage('Search term is required.')
+    .isLength({ max: 255 }).withMessage('Search term must be 255 characters or fewer.'),
+];
 
 // DELETE /suppliers/:id  |  GET /suppliers/:id
 const supplierIdValidator = [idParam];
@@ -52,5 +58,6 @@ const supplierIdValidator = [idParam];
 module.exports = {
   createSupplierValidator,
   updateSupplierValidator,
+  searchSupplierValidator,
   supplierIdValidator,
 };

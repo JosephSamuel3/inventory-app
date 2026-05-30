@@ -7,7 +7,8 @@ const locationsDb = require("../db/queries/locationsQueries");
 
 const getAllItems = asyncHandler(async (req, res) => {
     const items = await db.getAllItems();
-    res.render("inventory/index", { items });
+    res.render("inventory/index", 
+        { title: "Inventory", items });
 });
 
 
@@ -16,10 +17,13 @@ const getItemById = asyncHandler(async (req, res) => {
     const item = await db.getItemById(id);
 
     if (!item) {
-        return res.status(404).json({ error: `Item with id ${id} not found` });
+        return res.status(404).render("error", {
+            title: "Not Found",
+            status: 404,
+            error: `Item with id ${id} not found` });
     }
 
-    res.render("inventory/show", { item })
+    res.render("inventory/show", { title: "Inventory item details", item })
 });
 
 
@@ -27,7 +31,9 @@ const searchItems = asyncHandler(async (req, res) => {
     const { search } = req.query;
     const items = await db.searchItems(search);
 
-    res.render("/inventory", { items, search })
+    res.render("inventory/index", { 
+        title: "Inventory search result",
+        items, search })
 });
 
 const getCreateForm = asyncHandler(async (req, res) => {
@@ -63,7 +69,10 @@ const getEditForm = asyncHandler(async (req, res) => {
     ]);
 
     if (!item) {
-        return res.status(404).json({ error: `Item with id ${id} not found` });
+        return res.status(404).render("error", {
+            title: "Not Found",
+            status: 404,
+            error: `Item with id ${id} not found` });
     }
 
     res.render("inventory/edit", {
@@ -82,18 +91,24 @@ const updateItem = asyncHandler(async (req, res) => {
     const item = await db.updateItem(id, { name, description, sku, quantity, price, category_id, supplier_id, location_id });
 
     if (!item) {
-        return res.status(404).json({ error: `Item with id ${id} not found` });
+        return res.status(404).render("error", {
+            title: "Not Found",
+            status: 404,
+            error: `Item with id ${id} not found` });
     }
 
-    res.redirect(`inventory/show`)
+    res.redirect(`/inventory/${id}`)
 });
 
 const deleteItem = asyncHandler(async (req, res) => {
     const id = req.params.id;
     const item = await db.deleteItem(id);
-
+    
     if (!item) {
-        return res.status(404).json({ error: `Item with id ${id} not found` });
+        return res.status(404).render("error", {
+            title: "Not Found",
+            status: 404,
+            error: `Item with id ${id} not found` });
     }
 
     res.redirect("/inventory")
