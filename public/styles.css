@@ -1,0 +1,574 @@
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  background-color: #0e1117;
+  color: #dde4f0;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.app-container {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* ============================================================
+   HEADER / NAVBAR
+   ============================================================ */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 60px;
+  background: #141921;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  color: #dde4f0;
+}
+
+.navbar {
+  display: flex;
+  gap: 2rem;
+}
+
+.navbar a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #7a8899;
+  transition: color 0.15s;
+}
+
+.navbar a:hover {
+  color: #d97030;
+}
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.hero {
+  background: #161c2a;
+  border-radius: 18px;
+  padding: 2.75rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: #eef2fa;
+  max-width: 22rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.hero > div > p:not(.strap) {
+  font-size: 0.875rem;
+  color: #7a8899;
+  max-width: 34rem;
+  line-height: 1.7;
+}
+
+.hero-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex-shrink: 0;
+  padding-top: 0.25rem;
+}
+
+/* ============================================================
+   STRAP LABEL
+   ============================================================ */
+.strap {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #d97030;
+}
+
+/* ============================================================
+   HERO BUTTONS  (.button anchor pills)
+   ============================================================ */
+.button {
+  display: inline-block;
+  padding: 0.55rem 1.35rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1.5px solid transparent;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  cursor: pointer;
+}
+
+/* First hero button = amber filled primary */
+.hero-btn .button:first-child {
+  background-color: #d97030;
+  color: #ffffff;
+  border-color: #d97030;
+}
+
+.hero-btn .button:first-child:hover {
+  background-color: #c0611e;
+  border-color: #c0611e;
+}
+
+/* Remaining hero buttons = dark outline */
+.hero-btn .button:not(:first-child) {
+  background-color: transparent;
+  color: #dde4f0;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.hero-btn .button:not(:first-child):hover {
+  border-color: #d97030;
+  color: #d97030;
+}
+
+/* ============================================================
+   FORM BUTTONS
+   ============================================================ */
+button {
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.55rem 1.2rem;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  background: #1e2538;
+  color: #dde4f0;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+button:hover {
+  background: #252d42;
+}
+
+/* Primary submit (all non-delete forms) */
+form:not([action$="/delete"]) button[type="submit"] {
+  background: #d97030;
+  color: #ffffff;
+  border-color: #d97030;
+}
+
+form:not([action$="/delete"]) button[type="submit"]:hover {
+  background: #c0611e;
+  border-color: #c0611e;
+}
+
+/* Delete button = danger */
+form[action$="/delete"] button {
+  background: transparent;
+  color: #e05252;
+  border-color: #e05252;
+}
+
+form[action$="/delete"] button:hover {
+  background: #e05252;
+  color: #ffffff;
+}
+
+/* ============================================================
+   BACK / EDIT ACTION LINKS
+   Styled as amber outline pill buttons to make them pop
+   ============================================================ */
+main a:not(.button):not(.text-link) {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #d97030;
+  border: 1.5px solid #d97030;
+  transition: background 0.15s, color 0.15s;
+  margin: 0.25rem 0.25rem 0.25rem 0;
+}
+
+main a:not(.button):not(.text-link):hover {
+  background: #d97030;
+  color: #ffffff;
+}
+
+/* ============================================================
+   TEXT LINK (dashboard "View all")
+   ============================================================ */
+.text-link {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #7a8899;
+  transition: color 0.15s;
+}
+
+.text-link:hover {
+  color: #d97030;
+}
+
+/* ============================================================
+   STAT CARDS GRID
+   ============================================================ */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.card {
+  background: #161c2a;
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.card span {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #7a8899;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.card strong {
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #eef2fa;
+  line-height: 1;
+}
+
+/* ============================================================
+   DASHBOARD PANELS
+   ============================================================ */
+.dashboard-panel {
+  background: #161c2a;
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.heading h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #eef2fa;
+  margin: 0;
+}
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+thead tr {
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.07);
+}
+
+th {
+  text-align: left;
+  padding: 0.5rem 1rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #7a8899;
+}
+
+td {
+  padding: 0.8rem 1rem;
+  color: #c8d2e0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+td a {
+  color: #d97030;
+  font-weight: 500;
+  /* override the pill style for table links */
+  display: inline;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+}
+
+td a:hover {
+  background: transparent;
+  color: #f09050;
+  text-decoration: underline;
+}
+
+/* ============================================================
+   PAGE HEADINGS
+   ============================================================ */
+h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #eef2fa;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.35rem;
+  color: #eef2fa;
+  margin-bottom: 1rem;
+}
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 500px;
+}
+
+form > div {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #c8d2e0;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.01em;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  color: #dde4f0;
+  background: #1e2538;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #d97030;
+  box-shadow: 0 0 0 3px rgba(217, 112, 48, 0.18);
+}
+
+select option {
+  background: #1e2538;
+  color: #dde4f0;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* ============================================================
+   SEARCH FORM
+   ============================================================ */
+form[action$="/search"],
+form[action*="search"] {
+  flex-direction: row;
+  align-items: center;
+  max-width: 420px;
+  gap: 0;
+  margin-bottom: 1.5rem;
+}
+
+form[action$="/search"] input,
+form[action*="search"] input {
+  border-radius: 8px 0 0 8px;
+  border-right: none;
+  flex: 1;
+}
+
+form[action$="/search"] button,
+form[action*="search"] button {
+  border-radius: 0 8px 8px 0;
+  background: #d97030;
+  color: #ffffff;
+  border-color: #d97030;
+  padding: 0.6rem 1rem;
+}
+
+form[action$="/search"] button:hover,
+form[action*="search"] button:hover {
+  background: #c0611e;
+}
+
+/* ============================================================
+   LISTS (index pages)
+   ============================================================ */
+ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+li {
+  background: #161c2a;
+  border-radius: 10px;
+  padding: 0.85rem 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.1s;
+}
+
+li:hover {
+  background: #1c2438;
+}
+
+/* Links inside list items stay amber but without pill style */
+li a {
+  display: inline;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  color: #d97030;
+  font-weight: 500;
+}
+
+li a:hover {
+  background: transparent;
+  color: #f09050;
+  text-decoration: underline;
+}
+
+/* ============================================================
+   DETAIL / SHOW PAGES
+   ============================================================ */
+p {
+  font-size: 0.9rem;
+  margin-bottom: 0.6rem;
+  color: #a8b4c4;
+}
+
+p strong {
+  color: #dde4f0;
+  font-weight: 600;
+}
+
+/* ============================================================
+   ERROR / SUCCESS MESSAGES
+   ============================================================ */
+.errors {
+  background: rgba(224, 82, 82, 0.1);
+  border: 1.5px solid rgba(224, 82, 82, 0.4);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  max-width: 500px;
+}
+
+.errors ul {
+  gap: 0.25rem;
+}
+
+.errors li {
+  background: none;
+  padding: 0;
+  font-size: 0.825rem;
+  color: #f87171;
+  border: none;
+}
+
+.errors li:hover {
+  background: none;
+}
+
+.success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1.5px solid rgba(34, 197, 94, 0.3);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  color: #4ade80;
+  font-size: 0.825rem;
+  max-width: 500px;
+}
+
+/* ============================================================
+   ERROR PAGE
+   ============================================================ */
+.error-page {
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.error-page h1 {
+  font-size: 5rem;
+  color: #d97030;
+  margin-bottom: 1rem;
+}

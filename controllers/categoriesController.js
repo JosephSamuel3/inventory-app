@@ -47,7 +47,7 @@ const getCategoryItems = asyncHandler(async (req, res) => {
 
 const getCreateForm = asyncHandler(async (req, res) => {
     res.render("categories/create", {
-        title: "Add New Category",
+        title: "Create Category",
     });
 });
 

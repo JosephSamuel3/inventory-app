@@ -1,6 +1,8 @@
+<%- include("../partials/head") %>
+<%- include("../partials/errorMsg") %>
 <h1><%= title %></h1>
 
-<form action="/inventory/<%= item.id %>/edit" method="POST">
+<form action="/inventory/<%= item.id %>" method="POST">
 
     <label for="name">Name</label>
     <input
@@ -120,3 +122,4 @@
 <a href="/inventory/<%= item.id %>">
     Back
 </a>
+<%- include("../partials/footer") %>

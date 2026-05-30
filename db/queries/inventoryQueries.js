@@ -1,5 +1,7 @@
 const pool = require('../pool');
 
+const toNull = (v) => (v === '' || v === null || v === undefined) ? null : v;
+
 
 // Reusable SELECT fragment — joins all FK tables so every
 // query returns enriched rows without repeating the joins.
@@ -47,6 +49,18 @@ const getItemById = async (id) => {
 };
 
 
+// GET the N most recently added items
+const getRecentItems = async (limit = 3) => {
+  const { rows } = await pool.query(
+    `${ITEM_SELECT}
+     ORDER BY i.created_at DESC
+     LIMIT $1`,
+    [limit]
+  );
+  return rows;
+};
+
+
 // GET low-stock items (quantity at or below a threshold)
 // Defaults to 5 if no threshold is passed.
 const getLowStockItems = async (threshold = 5) => {
@@ -81,7 +95,7 @@ const createItem = async ({ name, description, sku, quantity, price, category_id
        (name, description, sku, quantity, price, category_id, supplier_id, location_id)
      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
      RETURNING *`,
-    [name, description ?? null, sku ?? null, quantity ?? 0, price ?? null, category_id ?? null, supplier_id ?? null, location_id ?? null]
+    [name, toNull(description), toNull(sku), quantity, toNull(price), toNull(category_id), toNull(supplier_id), toNull(location_id)]
   );
   return rows[0];
 };
@@ -102,7 +116,7 @@ const updateItem = async (id, { name, description, sku, quantity, price, categor
        location_id = $8
      WHERE id = $9
      RETURNING *`,
-    [name, description ?? null, sku ?? null, quantity, price ?? null, category_id ?? null, supplier_id ?? null, location_id ?? null, id]
+    [name, toNull(description), toNull(sku), quantity, toNull(price), toNull(category_id), toNull(supplier_id), toNull(location_id), id]
   );
   return rows[0] ?? null; // null if ID not found
 };
@@ -163,6 +177,7 @@ const getDashboardStats = async () => {
 module.exports = {
   getAllItems,
   getItemById,
+  getRecentItems,
   getLowStockItems,
   searchItems,
   createItem,

@@ -11,15 +11,15 @@ const nameField = body('name')
   .isLength({ max: 255 }).withMessage('Supplier name must be 255 characters or fewer.');
 
 const emailField = body('email')
-  .optional({ nullable: true, checkFalsy: true })
   .trim()
+  .notEmpty().withMessage('Email is required.')
   .isEmail().withMessage('A valid email address is required.')
   .isLength({ max: 255 }).withMessage('Email must be 255 characters or fewer.')
   .normalizeEmail();
 
 const phoneField = body('phone')
-  .optional({ nullable: true, checkFalsy: true })
   .trim()
+  .notEmpty().withMessage('Phone number is required.')
   .isLength({ max: 50 }).withMessage('Phone number must be 50 characters or fewer.');
 
 

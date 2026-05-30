@@ -1,4 +1,17 @@
 
-  </main>  
+  </main>
+  <script>
+    document.querySelectorAll('form[action$="/delete"]').forEach(function(form) {
+      form.addEventListener('submit', function(e) {
+        var password = window.prompt('Enter the admin password to confirm deletion:');
+        if (password !== 'saltyfish') {
+          e.preventDefault();
+          if (password !== null) {
+            alert('Incorrect password. Deletion cancelled.');
+          }
+        }
+      });
+    });
+  </script>
 </body>
 </html>

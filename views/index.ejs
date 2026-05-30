@@ -3,8 +3,8 @@
 <section class="hero">
     <div>
         <p class="strap">Inventory management</p>
-        <h1></h1>
-        <p></p>
+        <h1>Keep stock organised without losing the details.</h1>
+        <p>Track items, categories, suppliers, and storage locations — all in one place.</p>
     </div>
     <div class="hero-btn">
         <a class="button" href="/inventory/create">Add new Item</a>
@@ -33,18 +33,69 @@
     </article>
     <article class="card">
         <span>Inventory Value</span>
-        <strong><%= stats.totalInventoryValue %></strong>
+        <strong>$<%= stats.totalInventoryValue %></strong>
     </article>
 </section>
 
-<section class="low-stock-panel">
+<section class="dashboard-panel">
     <div class="heading">
-        <div>
-            <p class="strap"></p>
-            <h2>low stock items</h2>
-        </div>
-        <a class="text-link" href="">View all items</a>
+        <h2>Recently Added</h2>
+        <a class="text-link" href="/inventory">View all</a>
     </div>
-    <!-- here we list all items low in stock -->
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>SKU</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Added</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% recentItems.forEach(item => { %>
+            <tr>
+                <td><a href="/inventory/<%= item.id %>"><%= item.name %></a></td>
+                <td><%= item.sku %></td>
+                <td><%= item.quantity %></td>
+                <td>$<%= item.price %></td>
+                <td><%= new Date(item.created_at).toLocaleDateString() %></td>
+            </tr>
+            <% }) %>
+            <% if (recentItems.length === 0) { %>
+            <tr><td colspan="5">No items yet.</td></tr>
+            <% } %>
+        </tbody>
+    </table>
+</section>
+
+<section class="dashboard-panel">
+    <div class="heading">
+        <h2>Low Stock</h2>
+        <a class="text-link" href="/inventory">View all</a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>SKU</th>
+                <th>Quantity</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% lowStockItems.forEach(item => { %>
+            <tr>
+                <td><a href="/inventory/<%= item.id %>"><%= item.name %></a></td>
+                <td><%= item.sku %></td>
+                <td><%= item.quantity %></td>
+                <td><%= item.category_name || '—' %></td>
+            </tr>
+            <% }) %>
+            <% if (lowStockItems.length === 0) { %>
+            <tr><td colspan="4">No low-stock items.</td></tr>
+            <% } %>
+        </tbody>
+    </table>
 </section>
 <%- include("partials/footer") %>

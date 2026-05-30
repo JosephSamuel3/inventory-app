@@ -1,7 +1,8 @@
 <%- include("../partials/head") %>
+<%- include("../partials/errorMsg") %>
 <h1><%= title %></h1>
 
-<form action="/categories/create" method="POST">
+<form action="/categories" method="POST">
     <label for="name">Category Name</label>
     <input
         type="text"

@@ -8,14 +8,23 @@ const locationsDb = require("../db/queries/locationsQueries");
 
 const validateInventoryCreate = [
     ...createItemValidator,
-    (req, res, next) => {
-        const result = validationResult(req)
-        
+    async (req, res, next) => {
+        const result = validationResult(req);
+
         if (!result.isEmpty()) {
+            const [categories, suppliers, locations] = await Promise.all([
+                categoriesDb.getAllCategories(),
+                suppliersDb.getAllSuppliers(),
+                locationsDb.getAllLocations(),
+            ]);
+
             return res.status(400).render("Inventory/create", {
                 title: "Add New item",
                 errors: result.array(),
                 body: req.body,
+                categories,
+                suppliers,
+                locations,
             });
         }
 
