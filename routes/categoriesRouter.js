@@ -1,10 +1,11 @@
 const { Router } = require("express");
 const validateRequest = require("../middlewares/validateRequest");
-const { validateCategoryCreate, validateCategoryEdit } = require("../middlewares/validateCategoryRequest");
+const { validateCategoryCreate, validateCategoryEdit, validateCategorySearch } = require("../middlewares/validateCategoryRequest");
 
 const {
     getAllCategories,
     getCategoryItems,
+    searchCategories,
     getCreateForm,
     createCategory,
     getEditForm,
@@ -20,6 +21,7 @@ const categoryRouter = Router();
 
 
 categoryRouter.get("/", getAllCategories);
+categoryRouter.get("/search", validateCategorySearch, searchCategories);
 categoryRouter.get("/create", getCreateForm);
 categoryRouter.post("/", validateCategoryCreate, createCategory);
 categoryRouter.get("/:id", categoryIdValidator, validateRequest("categories/index", { categories: [], title: "Categories" }), getCategoryItems);

@@ -83,6 +83,18 @@ const deleteCategory = async (id) => {
 };
 
 
+// SEARCH categories by name (case-insensitive)
+const searchCategories = async (searchTerm) => {
+  const { rows } = await pool.query(
+    `SELECT * FROM categories
+     WHERE name ILIKE $1
+     ORDER BY name ASC`,
+    [`%${searchTerm}%`]
+  );
+  return rows;
+};
+
+
 // CHECK if a category name already exists (useful for validation)
 const categoryNameExists = async (name, excludeId = null) => {
   const { rows } = await pool.query(
@@ -98,6 +110,7 @@ module.exports = {
   getAllCategories,
   getCategoryById,
   getCategoryWithItems,
+  searchCategories,
   createCategory,
   updateCategory,
   deleteCategory,

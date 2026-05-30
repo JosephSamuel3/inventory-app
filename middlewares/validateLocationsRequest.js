@@ -1,6 +1,5 @@
 const { validationResult } = require("express-validator");
-const { createLocationValidator } = require("../validations/locationValidators");
-const { updateLocationValidator } = require("../validations/locationValidators");
+const { createLocationValidator, updateLocationValidator, searchLocationValidator } = require("../validations/locationValidators");
 const db = require("../db/queries/locationsQueries");
 
 const validateLocationCreate = [
@@ -41,7 +40,27 @@ const validateLocationEdit = [
 ];
 
 
+const validateLocationSearch = [
+    ...searchLocationValidator,
+    async (req, res, next) => {
+        const result = validationResult(req);
+
+        if (!result.isEmpty()) {
+            const locations = await db.getAllLocations();
+
+            return res.status(400).render("locations/index", {
+                title: "Storage Locations",
+                errors: result.array(),
+                locations,
+            });
+        }
+
+        next();
+    },
+];
+
 module.exports = {
     validateLocationCreate,
     validateLocationEdit,
+    validateLocationSearch,
 }

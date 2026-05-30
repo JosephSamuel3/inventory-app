@@ -1,10 +1,11 @@
 const { Router } = require("express");
 const validateRequest = require("../middlewares/validateRequest");
-const { validateLocationCreate, validateLocationEdit } = require("../middlewares/validateLocationsRequest");
+const { validateLocationCreate, validateLocationEdit, validateLocationSearch } = require("../middlewares/validateLocationsRequest");
 
 const {
     getAllLocations,
     getLocationItems,
+    searchLocations,
     getCreateForm,
     createLocation,
     getEditForm,
@@ -19,6 +20,7 @@ const {
 const locationRouter = Router();
 
 locationRouter.get("/", getAllLocations);
+locationRouter.get("/search", validateLocationSearch, searchLocations);
 locationRouter.get("/create", getCreateForm);
 locationRouter.post("/", validateLocationCreate, createLocation);
 locationRouter.get("/:id", locationIdValidator, validateRequest("locations/index"), getLocationItems);

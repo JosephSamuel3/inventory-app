@@ -2,6 +2,13 @@
 <h1><%= title %></h1>
 
 <a href="/categories/create">Create New Category</a>
+
+<%- include("../partials/errorMsg") %>
+<form action="/categories/search" method="GET">
+    <input type="text" name="search" placeholder="Search categories...">
+    <button type="submit">Search</button>
+</form>
+
 <ul>
     <% categories.forEach(category => { %>
         <li>

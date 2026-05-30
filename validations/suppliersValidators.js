@@ -5,10 +5,12 @@ const { supplierNameExists } = require('../db/queries/suppliersQueries');
 const idParam = param('id')
   .isInt({ min: 1 }).withMessage('Supplier ID must be a positive integer.');
 
-const nameField = body('name')
-  .trim()
-  .notEmpty().withMessage('Supplier name is required.')
-  .isLength({ max: 255 }).withMessage('Supplier name must be 255 characters or fewer.');
+// Factory — returns a fresh chain each call so .custom() calls don't bleed between validators
+const nameField = () =>
+  body('name')
+    .trim()
+    .notEmpty().withMessage('Supplier name is required.')
+    .isLength({ max: 255 }).withMessage('Supplier name must be 255 characters or fewer.');
 
 const emailField = body('email')
   .trim()
@@ -25,7 +27,7 @@ const phoneField = body('phone')
 
 // POST /suppliers — create
 const createSupplierValidator = [
-  nameField.custom(async (name) => {
+  nameField().custom(async (name) => {
     const exists = await supplierNameExists(name);
     if (exists) throw new Error(`A supplier named "${name}" already exists.`);
   }),
@@ -37,7 +39,7 @@ const createSupplierValidator = [
 // PUT /suppliers/:id — update
 const updateSupplierValidator = [
   idParam,
-  nameField.custom(async (name, { req }) => {
+  nameField().custom(async (name, { req }) => {
     const exists = await supplierNameExists(name, Number(req.params.id));
     if (exists) throw new Error(`A supplier named "${name}" already exists.`);
   }),

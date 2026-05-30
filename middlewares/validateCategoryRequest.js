@@ -1,6 +1,5 @@
 const { validationResult } = require("express-validator");
-const { createCategoryValidator } = require("../validations/categoryValidators");
-const { updateCategoryValidator } = require("../validations/categoryValidators");
+const { createCategoryValidator, updateCategoryValidator, searchCategoryValidator } = require("../validations/categoryValidators");
 const db = require("../db/queries/categoriesQueries");
 
 const validateCategoryCreate = [
@@ -40,7 +39,27 @@ const validateCategoryEdit = [
     },
 ];
 
+const validateCategorySearch = [
+    ...searchCategoryValidator,
+    async (req, res, next) => {
+        const result = validationResult(req);
+
+        if (!result.isEmpty()) {
+            const categories = await db.getAllCategories();
+
+            return res.status(400).render("categories/index", {
+                title: "Categories",
+                errors: result.array(),
+                categories,
+            });
+        }
+
+        next();
+    },
+];
+
 module.exports = {
     validateCategoryCreate,
     validateCategoryEdit,
+    validateCategorySearch,
 };

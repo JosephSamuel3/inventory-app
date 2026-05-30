@@ -45,6 +45,12 @@ const getLocationItems = asyncHandler(async (req, res) => {
     });
 });
 
+const searchLocations = asyncHandler(async (req, res) => {
+    const { search } = req.query;
+    const locations = await db.searchLocations(search);
+    res.render("locations/index", { title: "Storage Locations", locations });
+});
+
 const getCreateForm = asyncHandler(async (req, res) => {
     res.render("locations/create", {
         title: "Add New Location",
@@ -113,6 +119,7 @@ const deleteLocation = asyncHandler(async (req, res) => {
 module.exports = {
     getAllLocations,
     getLocationItems,
+    searchLocations,
     getCreateForm,
     createLocation,
     getEditForm,

@@ -1,6 +1,5 @@
 const { validationResult } = require("express-validator");
-const { createSupplierValidator } = require("../validations/suppliersValidators");
-const { updateSupplierValidator } = require("../validations/suppliersValidators");
+const { createSupplierValidator, updateSupplierValidator, searchSupplierValidator } = require("../validations/suppliersValidators");
 const db = require("../db/queries/suppliersQueries");
 
 const validateSupplierCreate = [
@@ -41,7 +40,27 @@ const validateSupplierEdit = [
 ];
 
 
+const validateSupplierSearch = [
+    ...searchSupplierValidator,
+    async (req, res, next) => {
+        const result = validationResult(req);
+
+        if (!result.isEmpty()) {
+            const suppliers = await db.getAllSuppliers();
+
+            return res.status(400).render("suppliers/index", {
+                title: "Suppliers",
+                errors: result.array(),
+                suppliers,
+            });
+        }
+
+        next();
+    },
+];
+
 module.exports = {
     validateSupplierCreate,
-    validateSupplierEdit
+    validateSupplierEdit,
+    validateSupplierSearch,
 }

@@ -45,6 +45,12 @@ const getCategoryItems = asyncHandler(async (req, res) => {
     });
 });
 
+const searchCategories = asyncHandler(async (req, res) => {
+    const { search } = req.query;
+    const categories = await db.searchCategories(search);
+    res.render("categories/index", { title: "Categories", categories });
+});
+
 const getCreateForm = asyncHandler(async (req, res) => {
     res.render("categories/create", {
         title: "Create Category",
@@ -114,6 +120,7 @@ const deleteCategory = asyncHandler(async (req, res) => {
 module.exports = {
     getAllCategories,
     getCategoryItems,
+    searchCategories,
     getCreateForm,
     createCategory,
     getEditForm,
